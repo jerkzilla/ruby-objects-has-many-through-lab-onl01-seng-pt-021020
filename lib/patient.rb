@@ -1,35 +1,28 @@
-require 'pry'
-
 class Patient
 
-@@all = []
-
-
-  attr_accessor :name, :appointment, :doctor
-
-  def initialize(name)
-    @name = name
-    @@all << self
-  end
+  @@all = []
 
   def self.all
     @@all
   end
 
-  def new_appointment(doctor, date)
-    Appointment.new(self, doctor, date)
+  attr_accessor :doctor
+
+  def initialize(name)
+    @name = name
+    @@all.push(self)
+  end
+
+  def new_appointment(doctor, time)
+    Appointment.new(doctor, self, time)
   end
 
   def appointments
-    Appointment.all.select do |appointment|
-      appointment.patient == self
-      #binding.pry
-    end
+    Appointment.all.select{|apt| apt.patient == self}
   end
 
   def doctors
-    Appointment.all.map do |appointment|
-      appointment.doctor
-    end
+    Doctor.all.select{|doc| doc.patients.include?(self)}
   end
+
 end
