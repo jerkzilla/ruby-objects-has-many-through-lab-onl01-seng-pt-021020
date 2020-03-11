@@ -2,27 +2,29 @@ class Patient
 
   @@all = []
 
-  def self.all
-    @@all
-  end
+
 
   attr_accessor :doctor
 
   def initialize(name)
     @name = name
-    @@all.push(self)
+    @@all << self
   end
 
-  def new_appointment(doctor, time)
-    Appointment.new(doctor, self, time)
+  def self.all
+    @@all
+  end
+
+  def new_appointment(doctor, date)
+    Appointment.new(doctor, self, date)
   end
 
   def appointments
-    Appointment.all.select{|apt| apt.patient == self}
+    Appointment.all.select{|appointment| appointment.patient == self}
   end
 
   def doctors
-    Doctor.all.select{|doc| doc.patients.include?(self)}
+    Doctor.all.select{|doctor| doctor.patients.include?(self)}
   end
 
 end
